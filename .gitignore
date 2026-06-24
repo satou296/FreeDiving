@@ -104,3 +104,36 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# =========================================================================
+# OS generated files (OSが自動生成する不要なファイル)
+# =========================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =========================================================================
+# UnityをGitで管理する上での必須設定
+# =========================================================================
+/[YourProjectFolderName]/Library/
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+MemoryCaptures/
+
+# =========================================================================
+# IDE (Visual Studio, Rider) 関連の一時ファイル
+# =========================================================================
+.vs/
+.idea/
+*.sln
+*.csproj
+*.unityproj
