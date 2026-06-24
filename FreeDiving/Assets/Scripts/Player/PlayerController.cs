@@ -33,4 +33,16 @@ public class PlayerController : MonoBehaviour
 
         rb.linearVelocity = moveInput * adjustedSpeed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 「Obstacle（障害物）」や「Enemy（敵）」のタグを持つ物体に激突したらゲームオーバー
+        if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Enemy"))
+        {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.GameOver();
+            }
+        }
+    }
 }
