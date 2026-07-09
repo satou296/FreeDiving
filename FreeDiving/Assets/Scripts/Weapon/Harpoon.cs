@@ -3,9 +3,10 @@ using UnityEngine;
 public class Harpoon : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
-    [SerializeField] private float lifeTime = 3f; // 画面外などで消えるまでの時間
+    // lifeTime 変数は使わなくなるため削除、またはコメントアウトしても構いません
     
     private Rigidbody2D rb;
+    private bool isStuck = false; // 壁に刺さっているかどうかのフラグ
 
     private void Awake()
     {
@@ -14,8 +15,7 @@ public class Harpoon : MonoBehaviour
 
     private void Start()
     {
-        // 一定時間経ったら自動で削除
-        Destroy(gameObject, lifeTime);
+        // 【修正】自動消滅する処理（Destroy）を完全に削除しました
     }
 
     // プレイヤーから呼び出されて飛ぶ方向を決める
@@ -27,20 +27,32 @@ public class Harpoon : MonoBehaviour
     // 2Dの当たり判定（トリガー判定）
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 当たった相手のタグが「Fish（魚）」だった場合
+        // 1. 魚に当たった場合
         if (collision.CompareTag("Fish"))
         {
-            // 魚にダメージを与える、あるいは魚を消す処理
             Debug.Log("魚にモリが当たりました！");
             Destroy(collision.gameObject); // 魚を消す
-            Destroy(gameObject);           // モリも消す
+            Destroy(gameObject);           // モリも消す（魚に当たった時は消して良い場合）
         }
-        // 壁などに当たった場合
+        // 2. 壁などに当たった場合
         else if (collision.CompareTag("Obstacle"))
         {
             Debug.Log("壁に刺さりました");
+            isStuck = true; 
+            
             rb.linearVelocity = Vector2.zero; // 停止させる
             rb.bodyType = RigidbodyType2D.Kinematic; // 物理演算を止めて固定
+        }
+        // 3. 壁に刺さっている状態でプレイヤーが触れた場合
+        else if (isStuck && collision.CompareTag("Player"))
+        {
+            PlayerHarpoon playerWeapon = collision.GetComponent<PlayerHarpoon>();
+            if (playerWeapon != null)
+            {
+                Debug.Log("モリを回収しました！");
+                playerWeapon.CatchHarpoon(); // プレイヤーを「モリを持っている状態」に戻す
+                Destroy(gameObject);         // 回収されたので、画面上からモリを消す
+            }
         }
     }
 }
