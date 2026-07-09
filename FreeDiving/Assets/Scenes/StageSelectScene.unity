@@ -1158,7 +1158,7 @@ GameObject:
   - component: {fileID: 1052056302}
   - component: {fileID: 1052056301}
   m_Layer: 0
-  m_Name: ' waepon1'
+  m_Name: waepon1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1214,7 +1214,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.21960784, g: 0.21960784, b: 0.21960784, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1232,7 +1232,7 @@ Transform:
   m_GameObject: {fileID: 1052056298}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.51033, y: -1.48908, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1950,9 +1950,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 935077514}
+  - {fileID: 1052056300}
   - {fileID: 2110267067}
   - {fileID: 747065082}
   - {fileID: 1322347800}
   - {fileID: 597203422}
   - {fileID: 1325604544}
-  - {fileID: 1052056300}
