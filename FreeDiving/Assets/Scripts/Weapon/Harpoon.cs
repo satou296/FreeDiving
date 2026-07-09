@@ -3,7 +3,6 @@ using UnityEngine;
 public class Harpoon : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
-    // lifeTime 変数は使わなくなるため削除、またはコメントアウトしても構いません
     
     private Rigidbody2D rb;
     private bool isStuck = false; // 壁に刺さっているかどうかのフラグ
@@ -15,7 +14,6 @@ public class Harpoon : MonoBehaviour
 
     private void Start()
     {
-        // 【修正】自動消滅する処理（Destroy）を完全に削除しました
     }
 
     // プレイヤーから呼び出されて飛ぶ方向を決める
