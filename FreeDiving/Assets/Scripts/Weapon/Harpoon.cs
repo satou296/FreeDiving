@@ -2,13 +2,20 @@ using UnityEngine;
 
 public class Harpoon : MonoBehaviour
 {
+    // モリの状態を定義
+    private enum HarpoonState
+    {
+        Flying,    // 飛んでいる
+        Stuck,     // 壁に刺さっている
+        Following  // プレイヤーに追従している
+    }
+
     [SerializeField] private float speed = 10f;
     [SerializeField] private float followSpeed = 5f;     // 追従するときのスピード
-    [SerializeField] private Vector2 followOffset = new Vector2(-0.5f, 0.5f); // プレイヤーからどれくらい離すか（例: 左上に少し離す）
+    [SerializeField] private Vector2 followOffset = new Vector2(-0.5f, 0.5f); // プレイヤーからの距離
 
     private Rigidbody2D rb;
-    private bool isStuck = false;
-    private bool isFollowing = false; // プレイヤーに回収されてついていっているか
+    private HarpoonState currentState = HarpoonState.Flying; // 初期状態は「飛んでいる」
     private Transform playerTransform; // 追従対象のプレイヤー
 
     private void Awake()
@@ -19,22 +26,18 @@ public class Harpoon : MonoBehaviour
     private void Update()
     {
         // プレイヤー追従モードの場合
-        if (isFollowing && playerTransform != null)
+        if (currentState == HarpoonState.Following && playerTransform != null)
         {
-            // プレイヤーの向き（transform.rightの正負など）に合わせてオフセットの左右を反転させると自然になります
             Vector3 targetOffset = followOffset;
             if (playerTransform.right.x < 0) 
             {
-                targetOffset.x *= -1; // 左を向いていたらオフセットも右側にする
+                targetOffset.x *= -1; // 左を向いていたらオフセットも反転
             }
 
-            // 目標位置（プレイヤーの位置 + オフセット）
             Vector3 targetPosition = playerTransform.position + targetOffset;
 
-            // スムーズに目標位置へ移動させる
+            // スムーズに目標位置へ移動
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSpeed);
-            
-            // プレイヤーと同じ回転に合わせる（必要に応じて）
             transform.rotation = playerTransform.rotation;
         }
     }
@@ -42,40 +45,40 @@ public class Harpoon : MonoBehaviour
     public void Launch(Vector2 direction)
     {
         rb.linearVelocity = direction * speed;
+        currentState = HarpoonState.Flying;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // 1. 魚に当たった場合
         if (collision.CompareTag("Fish"))
         {
             Debug.Log("魚にモリが当たりました！");
             Destroy(collision.gameObject);
-            Destroy(gameObject); // 魚に当たった時は消す（あるいはここでも回収待ちにするかはお好みで）
+            Destroy(gameObject); 
         }
-        else if (collision.CompareTag("Obstacle"))
+        // 2. 壁などに当たった場合（まだ飛んでいるときだけ判定）
+        else if (currentState == HarpoonState.Flying && collision.CompareTag("Obstacle"))
         {
             Debug.Log("壁に刺さりました");
-            isStuck = true;
+            currentState = HarpoonState.Stuck; // 状態を「刺さっている」に変更
+            
             rb.linearVelocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
-        // 壁に刺さっている、または「すでに追従して浮いている状態」で再度プレイヤーが触れたとき
-        else if (collision.CompareTag("Player"))
+        // 3. 「壁に刺さっている状態」でプレイヤーが触れた場合のみ回収できる
+        else if (currentState == HarpoonState.Stuck && collision.CompareTag("Player"))
         {
             PlayerHarpoon playerWeapon = collision.GetComponent<PlayerHarpoon>();
             
-            // まだプレイヤーがモリを持っていない（hasHarpoon == false）場合のみ回収できる
             if (playerWeapon != null && !playerWeapon.hasHarpoon)
             {
                 Debug.Log("モリがプレイヤーの追従を開始しました！");
-                playerWeapon.CatchHarpoon(); // プレイヤー側のフラグを「持っている」にする
+                playerWeapon.CatchHarpoon(); // プレイヤー側のフラグを戻す
                 
-                // 【変更点】Destroyせず、追従モードをONにする
-                isStuck = false;
-                isFollowing = true;
                 playerTransform = collision.transform;
+                currentState = HarpoonState.Following; // 状態を「追従中」に変更
 
-                // 物理演算が邪魔をしないようにトリガー化し、速度を完全にクリア
                 rb.bodyType = RigidbodyType2D.Kinematic;
                 rb.linearVelocity = Vector2.zero;
             }

@@ -21,7 +21,7 @@ public class PlayerHarpoon : MonoBehaviour
     {
         hasHarpoon = false;
 
-        // 【変更点】もし古いモリがついてきていたら、それを削除してから新しく生成する
+        // もし古いモリがついてきていたら、それを削除してから新しく生成する
         if (activeHarpoon != null)
         {
             Destroy(activeHarpoon);
