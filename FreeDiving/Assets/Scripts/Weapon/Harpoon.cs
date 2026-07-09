@@ -7,7 +7,7 @@ public class Harpoon : MonoBehaviour
     [SerializeField] private Vector2 followOffset = new Vector2(-0.5f, 0.5f); // プレイヤーからどれくらい離すか（例: 左上に少し離す）
 
     private Rigidbody2D rb;
-    private bool isStuck = false;
+    private bool isStuck = false; // 回収用
     private bool isFollowing = false; // プレイヤーに回収されてついていっているか
     private Transform playerTransform; // 追従対象のプレイヤー
 
@@ -50,7 +50,10 @@ public class Harpoon : MonoBehaviour
         {
             Debug.Log("魚にモリが当たりました！");
             Destroy(collision.gameObject);
-            Destroy(gameObject); // 魚に当たった時は消す（あるいはここでも回収待ちにするかはお好みで）
+            // 魚に当たった時回収待ちにする
+            isStuck = true;
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
         }
         else if (collision.CompareTag("Obstacle"))
         {
@@ -70,7 +73,7 @@ public class Harpoon : MonoBehaviour
                 Debug.Log("モリがプレイヤーの追従を開始しました！");
                 playerWeapon.CatchHarpoon(); // プレイヤー側のフラグを「持っている」にする
                 
-                // 【変更点】Destroyせず、追従モードをONにする
+                //Destroyせず、追従モードをONにする
                 isStuck = false;
                 isFollowing = true;
                 playerTransform = collision.transform;
