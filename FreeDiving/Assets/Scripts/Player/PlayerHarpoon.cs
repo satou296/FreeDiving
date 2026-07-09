@@ -3,14 +3,14 @@ using UnityEngine;
 public class PlayerHarpoon : MonoBehaviour
 {
     [Header("モリの設定")]
-    [SerializeField] private GameObject harpoonPrefab; // 投げるモリのプレハブ
-    [SerializeField] private Transform shotPoint;     // モリを発射する位置
+    [SerializeField] private GameObject harpoonPrefab;
+    [SerializeField] private Transform shotPoint;
     
-    public bool hasHarpoon = true; // モリを持っているかどうかのフラグ
+    public bool hasHarpoon = true;
+    private GameObject activeHarpoon; // 現在プレイヤーについてきているモリの記憶用
 
     private void Update()
     {
-        // モリを持っていて、スペースキーが押されたら投げる
         if (hasHarpoon && Input.GetKeyDown(KeyCode.Space))
         {
             ShootHarpoon();
@@ -19,21 +19,27 @@ public class PlayerHarpoon : MonoBehaviour
 
     private void ShootHarpoon()
     {
-        hasHarpoon = false; // 手放す
+        hasHarpoon = false;
 
-        // モリの生成
+        // 【変更点】もし古いモリがついてきていたら、それを削除してから新しく生成する
+        if (activeHarpoon != null)
+        {
+            Destroy(activeHarpoon);
+        }
+
         GameObject projectedHarpoon = Instantiate(harpoonPrefab, shotPoint.position, shotPoint.rotation);
         
-        // プレイヤーの向いている方向に合わせてモリを飛ばす（右向きを基準とした例）
+        // 生成したモリを記憶しておく
+        activeHarpoon = projectedHarpoon;
+
         Harpoon harpoonScript = projectedHarpoon.GetComponent<Harpoon>();
         if (harpoonScript != null)
         {
-            // プレイヤーの向き（ローカルの右方向）に発射
             harpoonScript.Launch(transform.right);
         }
     }
 
-    // モリを再回収するためのメソッド（必要に応じて）
+    // モリ側から呼び出される
     public void CatchHarpoon()
     {
         hasHarpoon = true;
