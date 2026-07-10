@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem; 
 
 public class PlayerHarpoon : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerHarpoon : MonoBehaviour
 
     private void Update()
     {
-        if (hasHarpoon && Input.GetKeyDown(KeyCode.Space))
+        if (hasHarpoon && Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             ShootHarpoon();
         }
@@ -21,15 +22,16 @@ public class PlayerHarpoon : MonoBehaviour
     {
         hasHarpoon = false;
 
-        // もし古いモリがついてきていたら、それを削除してから新しく生成する
+        // もし古いモリ（ついてきているモリ）があれば、それを画面から消す
         if (activeHarpoon != null)
         {
             Destroy(activeHarpoon);
         }
 
+        // 新しいモリを生成して発射
         GameObject projectedHarpoon = Instantiate(harpoonPrefab, shotPoint.position, shotPoint.rotation);
         
-        // 生成したモリを記憶しておく
+        // 今投げたモリを記憶しておく（次に拾うか投げる時用）
         activeHarpoon = projectedHarpoon;
 
         Harpoon harpoonScript = projectedHarpoon.GetComponent<Harpoon>();
@@ -39,9 +41,12 @@ public class PlayerHarpoon : MonoBehaviour
         }
     }
 
-    // モリ側から呼び出される
-    public void CatchHarpoon()
+    // モリ側から「自分自身（caughtHarpoon）」を渡してもらうように変更
+    public void CatchHarpoon(GameObject caughtHarpoon)
     {
         hasHarpoon = true;
+        
+        // 【追加】回収したモリがどれなのかをしっかり記憶する
+        activeHarpoon = caughtHarpoon; 
     }
 }
