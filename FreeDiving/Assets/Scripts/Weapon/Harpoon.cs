@@ -83,5 +83,22 @@ public class Harpoon : MonoBehaviour
                 rb.linearVelocity = Vector2.zero;
             }
         }
+        // 「壁に刺さっていない状態」でもプレイヤーは回収できる
+        else if (collision.CompareTag("Player"))
+        {
+            PlayerHarpoon playerWeapon = collision.GetComponent<PlayerHarpoon>();
+            
+            if (playerWeapon != null && !playerWeapon.hasHarpoon)
+            {
+                Debug.Log("モリがプレイヤーの追従を開始しました！");
+                playerWeapon.CatchHarpoon(); // プレイヤー側のフラグを戻す
+                
+                playerTransform = collision.transform;
+                currentState = HarpoonState.Following; // 状態を「追従中」に変更
+
+                rb.bodyType = RigidbodyType2D.Kinematic;
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
     }
 }
