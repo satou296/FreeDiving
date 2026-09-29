@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem; // ★New Input Systemの名前空間
 
 public class InteractableObject : MonoBehaviour
 {
@@ -22,8 +23,14 @@ public class InteractableObject : MonoBehaviour
 
     private void Update()
     {
+        // New Input System方式でEnterキー（Return / テンキーEnter）を判定
+        var keyboard = Keyboard.current;
+        if (keyboard == null) return;
+
+        bool enterPressed = keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame;
+
         // プレイヤーが近くにいて、かつEnterキー（Returnキー）が押された場合
-        if (isPlayerNearby && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+        if (isPlayerNearby && enterPressed)
         {
             TriggerInteraction();
         }
