@@ -1,114 +1,206 @@
-/*using UnityEngine;
-using UnityEngine.InputSystem; // ★これを追加
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("移動設定")]
     [SerializeField] private float baseMoveSpeed = 5f;
-    
+
+    [Header("体力設定")]
+    [SerializeField] private int maxHp = 100;
+    [SerializeField] private float invincibilityDuration = 1.0f; // 被弾後の無敵時間（秒）
+
+    [Header("潜水時間（酸素）設定")]
+    [SerializeField] private float maxOxygenTime = 30f;       // 潜っていられる最大時間（秒）
+    [SerializeField] private float surfaceThresholdY = 0f;    // 水面とみなすY座標（これ以上なら回復）
+    [SerializeField] private int suffocationDamage = 10;      // 酸素切れ時のスリップダメージ量
+    [SerializeField] private float damageInterval = 1.0f;     // スリップダメージが発生する間隔（秒）
+    [SerializeField] private bool recoverInstantlyAtSurface = true; // 水面で即全回復するか
+
+    private int currentHp;
+    private float invincibilityTimer = 0f;
     private Rigidbody2D rb;
     private Vector2 moveInput;
 
-    // 最後に動いた方向、または現在の入力方向を外部へ渡す
-    public Vector2 LastMoveDirection { get; private set; } = Vector2.right; // 初期値は右向き
+    // ★潜水時間管理用変数
+    private float currentOxygenTime;
+    private float suffocationTimer = 0f;
+
+    public Vector2 LastAimDirection { get; private set; } = Vector2.right;
+
+    // 外部（UI表示など）から参照できるプロパティ
+    public int CurrentHp => currentHp;
+    public int MaxHp => maxHp;
+    public float CurrentOxygenTime => currentOxygenTime;
+    public float MaxOxygenTime => maxOxygenTime;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0f; 
+        rb.gravityScale = 0f;
+        currentHp = maxHp; // 体力初期化
+        currentOxygenTime = maxOxygenTime; // 酸素初期化
     }
 
-    // ★新しいInput Systemから入力を受け取るためのメソッド
-    /*public void OnMove(InputValue value)
+    private void Update()
     {
-        moveInput = value.Get<Vector2>();
-    }*/
-
-/*
-    public void OnMove(InputValue value)
-    {
-        moveInput = value.Get<Vector2>();
-
-        // 何らかの入力がある場合、最後に移動した方向を更新
-        if (moveInput.sqrMagnitude > 0.01f)
+        // 1. 無敵時間のカウントダウン
+        if (invincibilityTimer > 0f)
         {
-            LastMoveDirection = moveInput.normalized;
+            invincibilityTimer -= Time.deltaTime;
+        }
+
+        // 2. 潜水時間（酸素）の処理
+        HandleOxygen();
+    }
+
+    // 酸素・潜水時間およびスリップダメージの管理
+    private void HandleOxygen()
+    {
+        // 水面より上にいる場合：酸素回復
+        if (transform.position.y >= surfaceThresholdY)
+        {
+            if (recoverInstantlyAtSurface)
+            {
+                currentOxygenTime = maxOxygenTime;
+            }
+            else
+            {
+                // 徐々に回復させたい場合（毎秒2倍速で回復）
+                currentOxygenTime = Mathf.Min(maxOxygenTime, currentOxygenTime + Time.deltaTime * 2f);
+            }
+
+            suffocationTimer = 0f; // スリップダメージ用タイマーをリセット
+            return;
+        }
+
+        // 水中にいる場合：酸素を消費
+        if (currentOxygenTime > 0f)
+        {
+            currentOxygenTime -= Time.deltaTime;
+            if (currentOxygenTime < 0f)
+            {
+                currentOxygenTime = 0f;
+            }
+        }
+        else
+        {
+            // ★酸素が0になった後のスリップダメージ処理
+            suffocationTimer += Time.deltaTime;
+            if (suffocationTimer >= damageInterval)
+            {
+                suffocationTimer = 0f;
+                Debug.Log("酸素が尽きました！窒息ダメージを受けます。");
+                // 無敵時間を無視して直接減算、または無敵時間付きダメージを呼ぶ
+                TakeSuffocationDamage(suffocationDamage);
+            }
         }
     }
 
-    private void FixedUpdate()
-    {
-        float currentPressure = PressureManager.Instance != null ? PressureManager.Instance.CurrentPressure : 0f;
-        float adjustedSpeed = Mathf.Max(1f, baseMoveSpeed - (currentPressure * 0.1f));
-
-        rb.linearVelocity = moveInput * adjustedSpeed;
-    }
-}*/
-
-using UnityEngine;
-using UnityEngine.InputSystem; // ★これを追加
-
-public class PlayerController : MonoBehaviour
-{
-    [Header("移動設定")]
-    [SerializeField] private float baseMoveSpeed = 5f;
-    
-    private Rigidbody2D rb;
-    private Vector2 moveInput;
-
-    // ★向いている方向（最後に移動した方向）を外部から取得するためのプロパティ（初期値は右向き）
-    public Vector2 LastAimDirection { get; private set; } = Vector2.right;
-
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        // 水中移動を表現するため、重力を0にするか適切に調整してください
-        rb.gravityScale = 0f; 
-    }
-
-    // ★新しいInput Systemから入力を受け取るためのメソッド
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
 
-        // 移動入力がある場合、狙う方向（AimDirection）を更新する
         if (moveInput.sqrMagnitude > 0.01f)
         {
             LastAimDirection = moveInput.normalized;
         }
     }
 
-    /*
-    private void Update()
-    {
-        // 入力の受付 (上下方向の矢印キーまたはWSキー)
-        // ※旧Input処理はNew Input System環境で例外エラーとなるためコメントアウトとして保持
-        // float moveY = Input.GetAxisRaw("Vertical");
-        // float moveX = Input.GetAxisRaw("Horizontal"); // 左右移動も考慮
-        // moveInput = new Vector2(moveX, moveY).normalized;
-    }
-    */
-
     private void FixedUpdate()
     {
-        // PressureManagerから現在の水圧を取得し、速度を減衰させる
         float currentPressure = PressureManager.Instance != null ? PressureManager.Instance.CurrentPressure : 0f;
-        
-        // 水圧が高くなるほど移動速度が遅くなる（最低速度を1に制限）
         float adjustedSpeed = Mathf.Max(1f, baseMoveSpeed - (currentPressure * 0.1f));
 
         rb.linearVelocity = moveInput * adjustedSpeed;
     }
 
+    // 敵からの通常ダメージ処理
+    public void TakeDamage(int damage)
+    {
+        if (invincibilityTimer > 0f) return;
+
+        currentHp -= damage;
+        invincibilityTimer = invincibilityDuration;
+        Debug.Log($"プレイヤーがダメージを受けました！ 残りHP: {currentHp}");
+
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            Die();
+        }
+    }
+
+    // ★窒息専用のスリップダメージ処理（被弾時の点滅・ノックバック等と差別化できるように独立）
+    private void TakeSuffocationDamage(int damage)
+    {
+        currentHp -= damage;
+        Debug.Log($"窒息スリップダメージ！ 残りHP: {currentHp}");
+
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("プレイヤーが力尽きました。");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver();
+        }
+    }
+
+    // --------------------------------------------------
+    // 衝突判定（物理コライダー: isTrigger = false の場合）
+    // --------------------------------------------------
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // 「Obstacle（障害物）」や「Enemy（敵）」のタグを持つ物体に激突したらゲームオーバー
-        if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Obstacle"))
         {
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.GameOver();
-            }
+            Die();
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ApplyEnemyDamage(collision.gameObject);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ApplyEnemyDamage(collision.gameObject);
+        }
+    }
+
+    // --------------------------------------------------
+    // トリガー判定（すり抜けコライダー: isTrigger = true の場合）
+    // --------------------------------------------------
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            ApplyEnemyDamage(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            ApplyEnemyDamage(collision.gameObject);
+        }
+    }
+
+    private void ApplyEnemyDamage(GameObject enemyObj)
+    {
+        EnemyFish enemy = enemyObj.GetComponent<EnemyFish>();
+        if (enemy != null && !enemy.IsCaptured)
+        {
+            TakeDamage(enemy.AttackDamage);
         }
     }
 }
