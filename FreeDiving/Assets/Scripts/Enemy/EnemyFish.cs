@@ -11,11 +11,21 @@ public class EnemyFish : MonoBehaviour
     [Header("敵のタイプ設定")]
     [SerializeField] private FishType fishType = FishType.Passive;
 
+    [Header("ステータス設定")]
+    [SerializeField] private int maxHp = 30;         // 魚の最大体力
+    [SerializeField] private int attackDamage = 20;  // プレイヤーへの攻撃力（Aggressive用）
+
     [Header("移動パラメータ")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float patrolDistance = 3f; // 往復する幅
     [SerializeField] private float detectRange = 5f;    // プレイヤーを見つける索敵範囲
 
+    [Header("画面外での自動消滅設定")]
+    [SerializeField] private bool autoDestroyOffscreen = true; // 画面外で消去するか
+    [SerializeField] private float offscreenDistance = 15f;    // カメラからこれ以上離れたら画面外と判定する距離
+    [SerializeField] private float destroyDelay = 3f;          // 画面外に出てから消滅するまでの猶予時間（秒）
+
+    private int currentHp;
     private Rigidbody2D rb;
     private Transform playerTransform;
     private Vector2 startPosition;
@@ -24,11 +34,25 @@ public class EnemyFish : MonoBehaviour
     // ★モリが刺さって停止したかどうかのフラグ
     private bool isCaptured = false;
 
+    // ★画面外判定用タイマーとカメラのTransform
+    private float offscreenTimer = 0f;
+    private Transform mainCameraTransform;
+
+    public int AttackDamage => attackDamage;
+    public bool IsCaptured => isCaptured;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f; // 重力を無効化
         startPosition = transform.position;
+        currentHp = maxHp; // HP初期化
+
+        // メインカメラのTransformを取得
+        if (Camera.main != null)
+        {
+            mainCameraTransform = Camera.main.transform;
+        }
 
         // プレイヤーオブジェクトを検索
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -36,6 +60,12 @@ public class EnemyFish : MonoBehaviour
         {
             playerTransform = playerObj.transform;
         }
+    }
+
+    private void Update()
+    {
+        // 画面外に出てしばらくしたら破棄する処理
+        HandleOffscreenDestroy();
     }
 
     private void FixedUpdate()
@@ -52,6 +82,35 @@ public class EnemyFish : MonoBehaviour
             case FishType.Aggressive:
                 AggressiveMovement();
                 break;
+        }
+    }
+
+    // ★画面外判定と消滅処理
+    private void HandleOffscreenDestroy()
+    {
+        if (!autoDestroyOffscreen || mainCameraTransform == null) return;
+
+        // 【最重要】モリが刺さっている（捕獲済み）の魚は、プレイヤーが回収に戻る可能性があるため消さない
+        if (isCaptured) return;
+
+        // カメラ（画面中心）との直線距離を測定
+        float distanceToCamera = Vector2.Distance(transform.position, mainCameraTransform.position);
+
+        if (distanceToCamera > offscreenDistance)
+        {
+            // 画面外にいる間、タイマーを進める
+            offscreenTimer += Time.deltaTime;
+
+            if (offscreenTimer >= destroyDelay)
+            {
+                // 一定時間画面外に留まり続けたため消滅
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            // 再び画面内（または近く）に戻ってきた場合はタイマーをリセット
+            offscreenTimer = 0f;
         }
     }
 
@@ -109,6 +168,24 @@ public class EnemyFish : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x = faceRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
         transform.localScale = scale;
+    }
+
+    // ★モリからダメージを受ける処理。力尽きたら true を返す
+    public bool TakeDamage(int damage)
+    {
+        if (isCaptured) return false;
+
+        currentHp -= damage;
+        Debug.Log($"{gameObject.name} に {damage} ダメージ！ 残りHP: {currentHp}");
+
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            OnHarpooned(); // 倒れたので停止・捕獲可能状態にする
+            return true;
+        }
+
+        return false; // まだ生きている
     }
 
     // ★モリが刺さったときにHarpoonスクリプトから呼ばれる停止処理

@@ -12,22 +12,29 @@ public class Harpoon : MonoBehaviour
 
     [SerializeField] private float speed = 10f;
     //[SerializeField] private float followSpeed = 5f;     追従させる際に滑らかにするために使用していた。
-    [SerializeField] private Vector2 followOffset = new Vector2(-0.5f, 0.5f); 
+    [SerializeField] private Vector2 followOffset = Vector2.zero; // 手の位置を使うためオフセットは基本0でOK
+
+    [Header("攻撃力設定")]
+    [SerializeField] private int damage = 30; // モリの攻撃力
 
     [Header("引き抜き設定")]
     [SerializeField] private float retrievalTimeFromFish = 1.5f; // 魚からモリを引き抜くのに必要な秒数
-    [SerializeField] private float retrievalTimeFromWall = 1.0f; // ★壁からモリを引き抜くのに必要な秒数
+    [SerializeField] private float retrievalTimeFromWall = 1.0f; // 壁からモリを引き抜くのに必要な秒数
 
     [Header("引き抜いた後の魚の挙動")]
-    [SerializeField] private bool destroyFishOnRetrieval = true; // 引き抜いた時に魚を消すかどうか（残すならチェックを外す）
+    [SerializeField] private bool destroyFishOnRetrieval = false; // 引き抜いた時に魚を消すかどうか（残すならチェックを外す）
+
+    [Header("刺さり具合の調整")]
+    [SerializeField] private float penetrationDepth = 0.2f; // 魚の体にどれくらいモリの先端をめり込ませるか
 
     private Rigidbody2D rb;
     
-    // 【修正】初期状態を Flying ではなく Stuck（停止・回収待ち状態）にする
+    // 初期状態を Flying ではなく Stuck（停止・回収待ち状態）にする
     private HarpoonState currentState = HarpoonState.Stuck; 
     private Transform playerTransform; 
+    private Transform targetshotPoint; // 手の位置を追従先として保持
 
-    // ★魚に刺さっているかどうかの判定フラグ
+    // 魚に刺さっているかどうかの判定フラグ
     private bool isStuckInFish = false;
     private float currentRetrievalTimer = 0f;
     private bool isPlayerTouching = false;
@@ -54,7 +61,7 @@ public class Harpoon : MonoBehaviour
 
     private void Update()
     {
-        // ★刺さっている状態でプレイヤーが触れている場合、長押し入力で回収タイマーを加算
+        // 刺さっている状態でプレイヤーが触れている場合、長押し入力で回収タイマーを加算
         if (currentState == HarpoonState.Stuck && isPlayerTouching && touchingPlayerHarpoon != null)
         {
             if (!touchingPlayerHarpoon.hasHarpoon)
@@ -90,21 +97,19 @@ public class Harpoon : MonoBehaviour
             }
         }
 
-        if (currentState == HarpoonState.Following && playerTransform != null)
+        // 手の位置に固定・追従させる処理
+        if (currentState == HarpoonState.Following)
         {
-            Vector3 targetOffset = followOffset;
-            
-            // プレイヤーの向きによって左右のオフセットを反転
-            if (playerTransform.right.x < 0) 
-            {
-                targetOffset.x *= -1; 
-            }
+            Transform followTarget = targetshotPoint != null ? targetshotPoint : playerTransform;
 
-            // Lerpを使わず、計算した位置に直接ワープ（固定）させることで距離を完全に一定にする
-            transform.position = playerTransform.position + targetOffset;
-            
-            // 向きも完全にプレイヤーに同期させる場合
-            transform.rotation = playerTransform.rotation;
+            if (followTarget != null)
+            {
+                // 手の座標にピッタリ合わせる
+                transform.position = followTarget.position;
+                
+                // 手・プレイヤーの回転に同期させる
+                transform.rotation = followTarget.rotation;
+            }
         }
     }
 
@@ -119,6 +124,7 @@ public class Harpoon : MonoBehaviour
         currentRetrievalTimer = 0f;
         isPlayerTouching = false;
         touchingPlayerHarpoon = null;
+        targetshotPoint = null;
 
         // 投げる瞬間に初めて物理演算を有効にし、状態を「Flying」にする
         rb.bodyType = RigidbodyType2D.Dynamic; 
@@ -137,49 +143,67 @@ public class Harpoon : MonoBehaviour
         // 1. 魚または敵に当たった場合（飛んでいる時のみ判定）
         if (currentState == HarpoonState.Flying && (collision.CompareTag("Fish") || collision.CompareTag("Enemy")))
         {
-            Debug.Log("魚にモリが刺さりました！");
-            
-            // 魚側の停止メソッドを呼び出す
             EnemyFish fish = collision.GetComponent<EnemyFish>();
+            bool isDefeated = false;
+
             if (fish != null)
             {
-                fish.OnHarpooned();
+                // 魚にダメージを与える
+                isDefeated = fish.TakeDamage(damage);
             }
 
-            // モリ自体の物理を止めて刺さった状態にする
-            currentState = HarpoonState.Stuck;
-            isStuckInFish = true; // ★魚に刺さったフラグをON
-            currentRetrievalTimer = 0f;
+            // 魚の体力が0になった場合、魚に突き刺さる
+            if (isDefeated)
+            {
+                Debug.Log("魚を仕留めました！ モリが刺さりました。");
+                currentState = HarpoonState.Stuck;
+                isStuckInFish = true;
+                currentRetrievalTimer = 0f;
 
-            rb.linearVelocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic;
+                rb.linearVelocity = Vector2.zero;
+                rb.bodyType = RigidbodyType2D.Kinematic;
 
-            // 魚の子オブジェクトにして位置を固定（魚と一緒に居続ける）
-            transform.SetParent(collision.transform);
+                // 進行方向に少しだけ踏み込ませて「めり込み」を表現
+                if (rb.linearVelocity.sqrMagnitude > 0.001f)
+                {
+                    transform.position += (Vector3)(rb.linearVelocity.normalized * penetrationDepth);
+                }
+                else
+                {
+                    transform.position += transform.up * penetrationDepth;
+                }
 
-            // ※以前の即時削除処理は無効化
-            // Destroy(collision.gameObject);
-            // Destroy(gameObject); 
+                // 重要: 第2引数に true を渡すことでワールド座標・角度・スケールを維持したまま子オブジェクト化する
+                transform.SetParent(collision.transform, true);
+            }
+            else
+            {
+                // まだHPが残っている場合、モリはその場で停止して回収待ちにする
+                Debug.Log("魚にダメージを与えましたが、まだ耐えています！");
+                currentState = HarpoonState.Stuck;
+                isStuckInFish = false; // 魚の体には固定せずその場に落とす/止める
+                rb.linearVelocity = Vector2.zero;
+                rb.bodyType = RigidbodyType2D.Kinematic;
+            }
         }
-        // 2. 壁などに当たった場合（本当に飛んでいるときだけ判定）
+        // 2. 壁などに当たった場合
         else if (currentState == HarpoonState.Flying && collision.CompareTag("Obstacle"))
         {
             Debug.Log("壁に刺さりました");
             currentState = HarpoonState.Stuck; 
-            isStuckInFish = false; // 壁なので魚フラグはOFF
+            isStuckInFish = false;
             currentRetrievalTimer = 0f;
             
             rb.linearVelocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic; // 物理演算を止めて固定
+            rb.bodyType = RigidbodyType2D.Kinematic;
         }
-        // 3. 「刺さっている（停止している）状態」でプレイヤーが触れたら回収準備
+        // 3. 回収準備（プレイヤーとの接触）
         else if (currentState == HarpoonState.Stuck && collision.CompareTag("Player"))
         {
             PlayerHarpoon playerWeapon = collision.GetComponentInParent<PlayerHarpoon>();
             
             if (playerWeapon != null && !playerWeapon.hasHarpoon)
             {
-                // ★壁・魚を問わずプレイヤーの接触を記録し、長押し回収の受け付けを開始
                 isPlayerTouching = true;
                 touchingPlayerHarpoon = playerWeapon;
 
@@ -191,9 +215,6 @@ public class Harpoon : MonoBehaviour
                 {
                     Debug.Log("壁からモリを引き抜くにはキーを長押ししてください...");
                 }
-
-                // ※以前の壁への即時回収処理は無効化
-                // ExecuteImmediateCatch(playerWeapon);
             }
         }
     }
@@ -218,6 +239,7 @@ public class Harpoon : MonoBehaviour
         playerWeapon.CatchHarpoon(gameObject); 
         
         playerTransform = playerWeapon.transform;
+        targetshotPoint = playerWeapon.ShotPoint; // 手の位置を保存
         currentState = HarpoonState.Following; 
 
         rb.bodyType = RigidbodyType2D.Kinematic;
@@ -252,6 +274,7 @@ public class Harpoon : MonoBehaviour
         {
             touchingPlayerHarpoon.CatchHarpoon(gameObject);
             playerTransform = touchingPlayerHarpoon.transform;
+            targetshotPoint = touchingPlayerHarpoon.ShotPoint; // 手の位置を保存
         }
 
         currentState = HarpoonState.Following;
@@ -262,10 +285,12 @@ public class Harpoon : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.linearVelocity = Vector2.zero;
 
-        // ★切り離しが完了した後に、設定に応じて魚を削除する
+        // ★魚を消したくないため、以下の削除処理をコメントアウトとして保持
+        /*
         if (fishToDestroy != null && destroyFishOnRetrieval)
         {
             Destroy(fishToDestroy);
         }
+        */
     }
 }
