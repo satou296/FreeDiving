@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem; // ← 新しいInput Systemを使うために追加
 
 public class PauseManager : MonoBehaviour
 {
     [Header("UI設定")]
-    [SerializeField] private GameObject pauseCanvas; // インスペクターでポーズUIのCanvas（またはパネル）を割り当てる
+    [SerializeField] private GameObject pauseCanvas; 
 
     [Header("制限設定")]
-    [SerializeField] private string startSceneName = "StartScene"; // ポーズを禁止するスタート画面のシーン名
+    [SerializeField] private string startSceneName = "Title"; // プロジェクトに合わせて Title や Home に変更してください
 
     private bool isPaused = false;
     private bool canPauseInThisScene = true;
@@ -35,8 +36,11 @@ public class PauseManager : MonoBehaviour
         // スタート画面なら入力を一切受け付けない
         if (!canPauseInThisScene) return;
 
-        // EscapeキーまたはPキーでポーズを切り替え
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
+        // キーボードが接続されていない場合は処理しない（エラー回避）
+        if (Keyboard.current == null) return;
+
+        // 新しいInput Systemでのキー入力判定 (Escapeキー または Pキー)
+        if (Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.pKey.wasPressedThisFrame)
         {
             if (isPaused)
             {
@@ -52,19 +56,16 @@ public class PauseManager : MonoBehaviour
     // ゲームを一時停止する
     public void Pause()
     {
-        // ゲームオーバー画面やセレクト画面など、元々時間が止まっている、
-        // あるいは物理演算がない画面でもUIだけは表示できるようにする
         isPaused = true;
         if (pauseCanvas != null)
         {
             pauseCanvas.SetActive(true);
         }
         
-        // 念のため時間を止める（ステージ1・2用）
         Time.timeScale = 0f; 
     }
 
-    // ゲームを再開する（ポーズ画面の「戻る」ボタンからも呼び出せる）
+    // ゲームを再開する
     public void Resume()
     {
         isPaused = false;
@@ -73,7 +74,26 @@ public class PauseManager : MonoBehaviour
             pauseCanvas.SetActive(false);
         }
         
-        // 時間の流れを元に戻す
         Time.timeScale = 1f; 
+    }
+
+    // 「最初からやり直す」ボタン用の処理
+    public void Retry()
+    {
+        // シーンを再読み込みする前に、必ず時間の流れを元に戻す
+        Time.timeScale = 1f; 
+        
+        // 現在のシーンの名前を取得して、再度ロードする
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // 「タイトルへ戻る」ボタン用の処理
+    public void GoToTitle()
+    {
+        // 超重要：シーン遷移する前に、必ず時間の流れを元に戻す
+        Time.timeScale = 1f; 
+        
+        // プロジェクト構成に合わせて "Title" や "StageSelectScene" に変更してください
+        SceneManager.LoadScene("Title"); 
     }
 }
