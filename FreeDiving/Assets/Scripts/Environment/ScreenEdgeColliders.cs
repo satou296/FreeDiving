@@ -40,6 +40,9 @@ public class ScreenEdgeColliders : MonoBehaviour
         wall.transform.SetParent(transform);
         wall.transform.localPosition = new Vector3(localPosition.x, localPosition.y, 0f);
 
+        // レイヤーを「ScreenWall」に設定
+        wall.layer = LayerMask.NameToLayer("ScreenWall");
+
         // タグを設定（モリの刺さり判定用）
         if (!string.IsNullOrEmpty(wallTag))
         {
