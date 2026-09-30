@@ -180,5 +180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Harpoon
   speed: 10
-  followSpeed: 5
   followOffset: {x: -0.5, y: 0.5}
+  damage: 5
+  retrievalTimeFromFish: 1.5
+  retrievalTimeFromWall: 1
+  destroyFishOnRetrieval: 0
+  penetrationDepth: 0.2

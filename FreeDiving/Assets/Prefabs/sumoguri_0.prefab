@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8927621819319263412}
   - component: {fileID: 1303238857015350062}
   - component: {fileID: 4040808674964261154}
+  - component: {fileID: -1241159021278659740}
   m_Layer: 0
   m_Name: sumoguri_0
   m_TagString: Player
@@ -183,6 +184,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   baseMoveSpeed: 5
+  maxHp: 100
+  invincibilityDuration: 1
+  maxOxygenTime: 30
+  surfaceThresholdY: 0
+  suffocationDamage: 10
+  damageInterval: 1
+  recoverInstantlyAtSurface: 1
+  idleFrontSprite: {fileID: 0}
+  movingDownSprite: {fileID: 0}
+  movingSideSprite: {fileID: 0}
+  movingUpSprite: {fileID: 0}
 --- !u!114 &1303238857015350062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +240,21 @@ MonoBehaviour:
   harpoonPrefab: {fileID: 4447697246714215966, guid: 2267d1ff3b4514469a5fa17129b2ee70, type: 3}
   shotPoint: {fileID: 6303982680231394253}
   hasHarpoon: 0
+--- !u!114 &-1241159021278659740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313670662586571445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3bc06430ac74b8fb067331f08514ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  maxWeightCapacity: 20
+  maxSlotCount: 10
+  storageList: []
 --- !u!1 &1044039921594660228
 GameObject:
   m_ObjectHideFlags: 0

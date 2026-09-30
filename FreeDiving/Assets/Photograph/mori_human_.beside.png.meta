@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: d603ecb2333734934996982c1d51f89f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2434374746051688589
+    second: mori_human_.beside_0
+  - first:
+      213: 2155859520504347734
+    second: mori_human_.beside_1
+  - first:
+      213: -7573513305689898003
+    second: mori_human_.beside_2
+  - first:
+      213: -4463660458928552134
+    second: mori_human_.beside_3
+  - first:
+      213: -1995649535542998527
+    second: mori_human_.beside_4
+  - first:
+      213: -5631885877248356407
+    second: mori_human_.beside_5
+  - first:
+      213: 5836142251401539692
+    second: mori_human_.beside_6
+  - first:
+      213: 8054904162490873328
+    second: mori_human_.beside_7
+  - first:
+      213: 5660938288029830370
+    second: mori_human_.beside_8
+  - first:
+      213: -3362210689144520610
+    second: mori_human_.beside_9
+  - first:
+      213: 1321382472728060076
+    second: mori_human_.beside_10
+  - first:
+      213: 901756912395143972
+    second: mori_human_.beside_11
+  - first:
+      213: -7688921844227783191
+    second: mori_human_.beside_12
+  - first:
+      213: 6621256336027096143
+    second: mori_human_.beside_13
+  - first:
+      213: 4295216266120351461
+    second: mori_human_.beside_14
+  - first:
+      213: 6331077575194303822
+    second: mori_human_.beside_15
+  - first:
+      213: 3476272149191688973
+    second: mori_human_.beside_16
+  - first:
+      213: -3473813056933547475
+    second: mori_human_.beside_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mori_human_.beside_0
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 67
+        width: 1626
+        height: 649
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 377486bf01d573ed0800000000000000
+      internalID: -2434374746051688589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_1
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 629
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65c3e49cfc62bed10800000000000000
+      internalID: 2155859520504347734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_2
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 630
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de3c8a056c975e690800000000000000
+      internalID: -7573513305689898003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_3
+      rect:
+        serializedVersion: 2
+        x: 1653
+        y: 402
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a374b9b4674ed02c0800000000000000
+      internalID: -4463660458928552134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_4
+      rect:
+        serializedVersion: 2
+        x: 1707
+        y: 383
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10a49c122570e44e0800000000000000
+      internalID: -1995649535542998527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_5
+      rect:
+        serializedVersion: 2
+        x: 1710
+        y: 378
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cf821732a587d1b0800000000000000
+      internalID: -5631885877248356407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_6
+      rect:
+        serializedVersion: 2
+        x: 1701
+        y: 321
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c60ff69d4742ef050800000000000000
+      internalID: 5836142251401539692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_7
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 148
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f57519b8a4c8cf60800000000000000
+      internalID: 8054904162490873328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_8
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 168
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ec0d694161bf8e40800000000000000
+      internalID: 5660938288029830370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_9
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 146
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e50058521370751d0800000000000000
+      internalID: -3362210689144520610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_10
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 152
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca02263ab5e765210800000000000000
+      internalID: 1321382472728060076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_11
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 146
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42bc015522fa38c00800000000000000
+      internalID: 901756912395143972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_12
+      rect:
+        serializedVersion: 2
+        x: 1514
+        y: 138
+        width: 11
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e5cf0102567b4590800000000000000
+      internalID: -7688921844227783191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_13
+      rect:
+        serializedVersion: 2
+        x: 1524
+        y: 144
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4413b38e8d63eb50800000000000000
+      internalID: 6621256336027096143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_14
+      rect:
+        serializedVersion: 2
+        x: 879
+        y: 112
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ee459fdf6cab9b30800000000000000
+      internalID: 4295216266120351461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_15
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 114
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4dd5ead2818cd750800000000000000
+      internalID: 6331077575194303822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_16
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 115
+        width: 19
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0387230a133e3030800000000000000
+      internalID: 3476272149191688973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mori_human_.beside_17
+      rect:
+        serializedVersion: 2
+        x: 1451
+        y: 55
+        width: 12
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d22bc550e698acfc0800000000000000
+      internalID: -3473813056933547475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      mori_human_.beside_0: -2434374746051688589
+      mori_human_.beside_1: 2155859520504347734
+      mori_human_.beside_10: 1321382472728060076
+      mori_human_.beside_11: 901756912395143972
+      mori_human_.beside_12: -7688921844227783191
+      mori_human_.beside_13: 6621256336027096143
+      mori_human_.beside_14: 4295216266120351461
+      mori_human_.beside_15: 6331077575194303822
+      mori_human_.beside_16: 3476272149191688973
+      mori_human_.beside_17: -3473813056933547475
+      mori_human_.beside_2: -7573513305689898003
+      mori_human_.beside_3: -4463660458928552134
+      mori_human_.beside_4: -1995649535542998527
+      mori_human_.beside_5: -5631885877248356407
+      mori_human_.beside_6: 5836142251401539692
+      mori_human_.beside_7: 8054904162490873328
+      mori_human_.beside_8: 5660938288029830370
+      mori_human_.beside_9: -3362210689144520610
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
