@@ -15,6 +15,12 @@ public class EnemyFish : MonoBehaviour
     [SerializeField] private int maxHp = 30;         // 魚の最大体力
     [SerializeField] private int attackDamage = 20;  // プレイヤーへの攻撃力（Aggressive用）
 
+    [Header("捕獲・ストレージ情報")]
+    [SerializeField] private string fishName = "イワシ"; // 魚の名前
+    [SerializeField] private float fishWeight = 1.0f;   // 魚の重さ（kg）
+    [SerializeField] private int fishValue = 100;       // 売却価格・スコア
+    [SerializeField] private Sprite fishIcon;           // UI用アイコン（任意）
+
     [Header("移動パラメータ")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float patrolDistance = 3f; // 往復する幅
@@ -40,6 +46,12 @@ public class EnemyFish : MonoBehaviour
 
     public int AttackDamage => attackDamage;
     public bool IsCaptured => isCaptured;
+
+    // ★ストレージ用プロパティ
+    public string FishName => fishName;
+    public float FishWeight => fishWeight;
+    public int FishValue => fishValue;
+    public Sprite FishIcon => fishIcon;
 
     private void Start()
     {

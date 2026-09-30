@@ -180,8 +180,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFish
   fishType: 1
-  maxHp: 30
+  maxHp: 100
   attackDamage: 20
+  fishName: Shark
+  fishWeight: 10
+  fishValue: 1000
+  fishIcon: {fileID: -1903733839424438810, guid: 2711243c1677a48dd8105b9bdfaf3f44, type: 3}
   moveSpeed: 2
   patrolDistance: 3
   detectRange: 5

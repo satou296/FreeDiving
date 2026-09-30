@@ -46,6 +46,8 @@ GameObject:
   - component: {fileID: 5758211345060769929}
   - component: {fileID: 8079341578825194462}
   - component: {fileID: 2139889976635620703}
+  - component: {fileID: 2449379104362516476}
+  - component: {fileID: -5346377838791663865}
   m_Layer: 0
   m_Name: mori_human_3
   m_TagString: Player
@@ -266,3 +268,37 @@ MonoBehaviour:
   suffocationDamage: 10
   damageInterval: 1
   recoverInstantlyAtSurface: 1
+  idleFrontSprite: {fileID: -4288352050406032013, guid: de0e0edded4074685bb0aa78d91d4254, type: 3}
+  movingDownSprite: {fileID: 3005558251099734797, guid: b950818ffc00f479d9df2444ca38fcc6, type: 3}
+  movingSideSprite: {fileID: -2434374746051688589, guid: d603ecb2333734934996982c1d51f89f, type: 3}
+  movingUpSprite: {fileID: 6039918410662564258, guid: 78d3510bbec08473592147b8b64625cc, type: 3}
+--- !u!114 &2449379104362516476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5991977777615213475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3bc06430ac74b8fb067331f08514ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  maxWeightCapacity: 20
+  maxSlotCount: 10
+  storageList: []
+--- !u!114 &-5346377838791663865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5991977777615213475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3bc06430ac74b8fb067331f08514ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  maxWeightCapacity: 20
+  maxSlotCount: 10
+  storageList: []
