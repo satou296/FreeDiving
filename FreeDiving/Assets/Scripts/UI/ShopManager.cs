@@ -144,7 +144,7 @@ public class ShopManager : MonoBehaviour
     {
         if (currentMoneyText != null && playerInventory != null)
         {
-            currentMoneyText.text = $"所持金: {playerInventory.CurrentMoney:#,##0} G";
+            currentMoneyText.text = $"Cash on hand: {playerInventory.CurrentMoney:#,##0} G";
         }
     }
 
@@ -160,7 +160,7 @@ public class ShopManager : MonoBehaviour
         {
             if (fishList.Count == 0)
             {
-                saleFishListText.text = "売却できる魚がありません。";
+                saleFishListText.text = "There are no fish available to sell.";
             }
             else
             {
@@ -175,7 +175,7 @@ public class ShopManager : MonoBehaviour
 
         if (totalSellPriceText != null)
         {
-            totalSellPriceText.text = $"合計売却額: {totalValue:#,##0} G";
+            totalSellPriceText.text = $"Total sale price: {totalValue:#,##0} G";
         }
 
         if (sellAllButton != null)
@@ -195,11 +195,11 @@ public class ShopManager : MonoBehaviour
         // モリ表示更新
         if (harpoonStatusText != null)
         {
-            harpoonStatusText.text = $"強化モリ (Lv.{PlayerInventory.HarpoonLevel})\n威力アップ (+15)";
+            harpoonStatusText.text = $"Reinforced Moly (Lv.{PlayerInventory.HarpoonLevel})\nIncreased power(+15)";
         }
         if (harpoonCostText != null)
         {
-            harpoonCostText.text = $"必要金額: {harpoonCost:#,##0} G";
+            harpoonCostText.text = $"Required amount: {harpoonCost:#,##0} G";
         }
         if (buyHarpoonButton != null)
         {
@@ -209,11 +209,11 @@ public class ShopManager : MonoBehaviour
         // 酸素タンク表示更新
         if (oxygenStatusText != null)
         {
-            oxygenStatusText.text = $"大容量酸素ボンベ (Lv.{PlayerInventory.OxygenTankLevel})\n潜水時間アップ (+10秒)";
+            oxygenStatusText.text = $"High-capacity oxygen cylinder(Lv.{PlayerInventory.OxygenTankLevel})\nIncreased diving time(+10秒)";
         }
         if (oxygenCostText != null)
         {
-            oxygenCostText.text = $"必要金額: {oxygenCost:#,##0} G";
+            oxygenCostText.text = $"Required amount: {oxygenCost:#,##0} G";
         }
         if (buyOxygenButton != null)
         {
