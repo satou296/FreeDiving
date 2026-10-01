@@ -54,6 +54,9 @@ public class Harpoon : MonoBehaviour
 
     private void Start()
     {
+        // 購入したモリのレベルに応じて攻撃力を強化（例: 1レベルごとに +15ダメージ）
+        int damageBonus = (PlayerInventory.HarpoonLevel - 1) * 15;
+        damage += damageBonus;
         // ゲーム開始時に配置されている場合、勝手に動かないように物理演算を止めておく
         if (currentState == HarpoonState.Stuck)
         {
