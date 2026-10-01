@@ -45,10 +45,15 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
-        spriteRenderer = GetComponent<SpriteRenderer>(); // ★SpriteRendererを取得
+        spriteRenderer = GetComponent<SpriteRenderer>(); // SpriteRendererを取得
 
         currentHp = maxHp; // 体力初期化
-        currentOxygenTime = maxOxygenTime; // 酸素初期化
+        //currentOxygenTime = maxOxygenTime; // 酸素初期化
+
+        // 購入した酸素タンクレベルに応じて最大潜水時間を強化（例: 1レベルごとに +10秒）
+        int oxygenBonus = (PlayerInventory.OxygenTankLevel - 1) * 10;
+        maxOxygenTime += oxygenBonus;
+        currentOxygenTime = maxOxygenTime; // 強化後の最大値で初期化
 
         // 初期スプライトを正面に設定
         if (idleFrontSprite != null && spriteRenderer != null)

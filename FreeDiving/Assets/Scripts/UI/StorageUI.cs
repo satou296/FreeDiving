@@ -8,8 +8,9 @@ public class StorageUI : MonoBehaviour
 {
     [Header("UI要素の参照")]
     [SerializeField] private GameObject storagePanel;               // ストレージ画面の親パネル
-    [SerializeField] private TextMeshProUGUI capacityText;          // TextMeshProUGUI に変更
-    [SerializeField] private TextMeshProUGUI fishListText;          // TextMeshProUGUI に変更
+    [SerializeField] private TextMeshProUGUI capacityText;          // 重量・匹数表示用テキスト
+    [SerializeField] private TextMeshProUGUI fishListText;          // 捕獲した魚の一覧表示用テキスト
+    [SerializeField] private TextMeshProUGUI moneyText;             // 所持金表示用テキスト
 
     [Header("プレイヤー参照")]
     [SerializeField] private PlayerInventory playerInventory;
@@ -77,7 +78,7 @@ public class StorageUI : MonoBehaviour
         isOpen = true;
         storagePanel.SetActive(true);
 
-        // 魚リストの表示を最新状態に更新
+        // 魚リストおよび所持金の表示を最新状態に更新
         UpdateStorageDisplay();
 
         // 必要に応じてゲーム内時間を止める
@@ -114,7 +115,13 @@ public class StorageUI : MonoBehaviour
                                 $"Number of animals: {playerInventory.CurrentCount} / {playerInventory.MaxSlotCount} ";
         }
 
-        // 2. 捕獲した魚一覧テキストの構築
+        // 2. 所持金テキストの更新
+        if (moneyText != null)
+        {
+            moneyText.text = $"Money: {playerInventory.CurrentMoney:#,##0} G";
+        }
+
+        // 3. 捕獲した魚一覧テキストの構築
         if (fishListText != null)
         {
             if (playerInventory.CurrentCount == 0)
@@ -135,7 +142,7 @@ public class StorageUI : MonoBehaviour
             }
 
             sb.AppendLine("--------------------------------------------------");
-            sb.AppendLine($"Total estimated sale price: {playerInventory.CalculateTotalValue()} G");
+            sb.AppendLine($"Total estimated sale price: {playerInventory.CalculateTotalValue():#,##0} G");
 
             fishListText.text = sb.ToString();
         }

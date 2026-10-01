@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameOverScene.unity
     guid: 55444a35afb8549a98e3947989c8cabe
+  - enabled: 1
+    path: Assets/Scenes/Beach hut.unity
+    guid: d555937c8cacc4602b3fce74268a61ae
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
